@@ -1,0 +1,606 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amssymb,authblk}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{faktor}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage[linewidth=1pt,
+middlelinecolor= black,
+middlelinewidth=0.4pt,
+roundcorner=1pt,
+topline = false,
+rightline = false,
+bottomline = false,
+rightmargin=0pt,
+skipabove=0pt,
+skipbelow=0pt,
+leftmargin=-1cm,
+innerleftmargin=1cm,
+innerrightmargin=0pt,
+innertopmargin=0pt,
+innerbottommargin=0pt]{mdframed}
+
+\usepackage{multicol}
+\usepackage{array}
+\usepackage[a4paper]{geometry}
+\usepackage{shuffle}
+\usepackage[french]{babel}
+\usepackage{hyperref}
+\usepackage{tikz, tikz-cd}
+\usepackage{fp}
+\usepackage{ifthen}
+\usepackage{calc}
+\usetikzlibrary{automata, positioning, arrows}
+
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{Eg}{\textbf{Example}}[section]
+\newtheorem{Egs}{\textbf{Examples}}[section]
+\newtheorem{Rq}{\textbf{Remark}}[section]
+\newtheorem{Not}{\textbf{Notation}}[section]
+\newtheorem*{Eg*}{Exemple}
+\newtheorem*{defi*}{Définition}
+\newtheorem*{Rq*}{\textbf{Remarque}}
+
+\NewDocumentCommand{\libra}{ m m }{\ensuremath{\left[ #1, #2\right]}}
+\NewDocumentCommand{\librao}{ m m }{\ensuremath{\left[ #1, #2\right]^{\mathrm{op}}}}
+\NewDocumentCommand{\rhdo}{}{\ensuremath{\rhd^{\mathrm{op}}}}
+\NewDocumentCommand{\cdoto}{}{\ensuremath{\cdot^{\mathrm{op}}}}
+\NewDocumentCommand{\Deltao}{}{\ensuremath{\Delta^{\mathrm{cop}}}}
+\NewDocumentCommand{\g}{}{\ensuremath{\mathfrak{g}}}
+
+
+\newtheorem{innercustomgeneric}{\customgenericname}
+\providecommand{\customgenericname}{}
+\newcommand{\newcustomtheorem}[2]{%
+	\newenvironment{#1}[1]
+	{%
+		\renewcommand\customgenericname{#2}%
+		\renewcommand\theinnercustomgeneric{##1}%
+		\innercustomgeneric
+	}
+	{\endinnercustomgeneric}
+}
+\newcustomtheorem{customdefi}{Definition}
+\newcustomtheorem{customrq}{Remark}
+\newcustomtheorem{customEgs}{Examples}
+\newcustomtheorem{customEg}{Example}
+
+\theoremstyle{plain}
+\newtheorem{Prop}[defi]{Proposition}
+\newtheorem{Lemme}[defi]{Lemma}
+\newtheorem{Cor}[defi]{Corollary}
+\newtheorem{thm}[defi]{Theorem}
+\newtheorem*{thm*}{Theorme}
+\newtheorem*{Lemme*}{Lemma}
+\newtheorem*{Prop*}{Proposition}
+
+\newtheorem{innercustomgenerictwo}{\customgenericname}
+\providecommand{\customgenericname}{}
+\newcommand{\newcustomtheoremplain}[2]{%
+	\newenvironment{#1}[1]
+	{%
+		\renewcommand\customgenericname{#2}%
+		\renewcommand\theinnercustomgenerictwo{##1}%
+		\innercustomgenerictwo
+	}
+	{\endinnercustomgeneric}
+}
+\newcustomtheoremplain{customthm}{Théorème}
+\newcustomtheoremplain{customlemma}{Lemme}
+\newcustomtheoremplain{customprop}{Proposition}
+
+% Macros usuelles
+\newcommand{\IE}[2]{$\llbracket #1,#2 \rrbracket$}
+\newcommand{\IEM}[2]{\llbracket #1,#2 \rrbracket}
+\newcommand{\e}{\varepsilon}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Nz}{\ensuremath{\mathbb{N}\setminus\{0\}}}
+\newcommand{\ssi}{if and only if}
+
+% Symboles d'ensembles
+\DeclareMathOperator{\h}{\mathfrak{h}}
+\DeclareMathOperator{\dDsh}{\overline{\Delta_{\shuffle}}}
+\DeclareMathOperator{\Dsh}{{\Delta_{\shuffle}}}
+\DeclareMathOperator{\EF}{\mathcal{EF}}
+\DeclareMathOperator{\FTBD}{\mathcal{FTBD}}
+\DeclareMathOperator{\ET}{\mathcal{ET}}
+\DeclareMathOperator{\TTBD}{\mathcal{TTBD}}
+\DeclareMathOperator{\TD}{\mathcal{TD}}
+\DeclareMathOperator{\FD}{\mathcal{FD}}
+
+% Symboles d'opérateurs
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Gen}{Gen}
+
+% Macros texte
+\NewDocumentCommand{\PL}{}{Post-Lie}
+\NewDocumentCommand{\PH}{}{Post-Hopf}
+\NewDocumentCommand{\PG}{}{Post-groupe}
+
+
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords.}} #1}
+\providecommand{\AMSclass}[1]{\textbf{\textit{AMS classification.}} #1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Macros arbres %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\pointdec}{\raisebox{0.3\height}{\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.3cm,y=0.3cm]
+			\draw (0,0) circle (3.5pt);
+\end{tikzpicture}}}
+
+\newcommand{\point}{\raisebox{0.3\height}{\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.3cm,y=0.3cm]
+			\filldraw (0,0) circle (3.5pt);
+\end{tikzpicture}}}
+
+\NewDocumentCommand{\pointdeced}{m}{\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.3cm,y=0.3cm]
+		\draw (0,0) circle (3.5pt);
+		\draw (0,0) node{\footnotesize{$1$}};
+		\end{tikzpicture}}
+
+
+\begin{document}
+\title{Résumé discussion Adrien \bsc{Busnot-Laurent}}\author{Pierre \bsc{Catoire}}
+\maketitle
+
+\begin{abstract}
+	Une tentative pour donner un cadre algébrique aux arbres exotiques
+\end{abstract}
+
+\section{Rappel des définitions élémentaires}
+
+	\begin{defi}[Algèbres \PL{}]\label{defi:LPL}
+	Une \emph{algèbre \PL{} (à gauche)} est un triplet $(\h, [,], \rhd)$ où $(\h,[,])$ est une algèbre de Lie et $\rhd:\h\otimes\h \rightarrow \h$ est une application linéaire satisfaisant pour tous $x,y,z\in\h$:
+	\begin{align}
+		x\rhd [y,z]&=\libra{x\rhd y}{z}+\libra{y}{x\rhd z}, \label{LPL1} \\
+		\libra{x}{y}\rhd z&=a_{\rhd}(y,x,z)-a_{\rhd}(x,y,z) \label{LPL2} \\
+		&=(y\rhd x)\rhd z-y\rhd(x\rhd z)-(x\rhd y)\rhd z+x\rhd(y\rhd z). \nonumber
+	\end{align}
+\end{defi}
+
+	\begin{defi}[algèbres \PH{}]\label{defi:LPH}
+	Une \emph{algèbre \PH{}}  est un 6-uplet $(H,\cdot,1,\Delta,\e,\rhd)$ tel que $(H,\cdot,1,\Delta,\e)$ est une algèbre de Hopf et $\rhd:H\otimes H \rightarrow H$ est un morphisme de cogèbres satisfaisant pour tous $x,y,z\in H$:
+	\begin{align}
+		x\rhd(y\cdot z)&=\left(x^{(1)}\rhd y\right)\cdot \left(x^{(2)}\rhd z \right), \\
+		x\rhd\left( y\rhd z \right)&=\left( x^{(1)}\cdot \left( x^{(2)}\rhd y \right)\right)\rhd z,
+	\end{align}
+	et telle que:
+	\begin{align}
+		\alpha_{\rhd}:\left\lbrace\begin{array}{rcl}
+			H & \rightarrow & H, \\
+			y & \mapsto & x\rhd y,
+		\end{array}\right.
+	\end{align}
+	est inversible dans $\Hom(H,\Hom(H))$.
+\end{defi}
+
+
+\section{Forêts à décorer, forêt décorées et forêts exotiques}
+
+\subsection{Définition des objets}
+\begin{defi}
+	On appelle \emph{forêt à décorer} une forêt planaire d'arbres planaires dont certaines feuilles disposent d'affixes vides dites à décorer.
+	Notons l'ensemble des forêts à décorer $\FTBD$.
+\end{defi}
+\begin{Rq}
+	La forêt vide $1$ est un élément de $\FTBD$ tandis que l'arbre décoré vide n'est pas un élément de de $\TTBD$.
+\end{Rq}
+\begin{Eg}
+	\begin{itemize}
+		\item Voici un exemple d'arbre à décoré:
+		\[
+		\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}
+		\] 
+		\item Voici un exemple de forêt à décorer:
+		\[
+		\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}~\point ~\pointdec~\pointdec
+		\]
+	\end{itemize}
+\end{Eg}
+
+\begin{defi}
+	On appelle \emph{forêt décorée} un élément de $\FTBD\otimes T(\N^*)$:
+	\[
+	F \otimes w
+	\] 
+	où en posant $k$ le nombre de feuilles blanches de $F$, $w=w_1\dots w_k$.
+	
+	Définissons $\FD$ l'ensemble de ces forêts décorées.
+\end{defi}
+\begin{Eg}
+	\begin{itemize}
+		\item Voici un exemple d'arbre décoré:
+		\[
+		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}\otimes 11.
+		\]
+		\item Voici un exemple d'une forêt exotique: 
+		\[
+		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdec~\pointdec\otimes 2211
+		\leftrightarrow\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\draw (1,2) node{\footnotesize{$2$}};
+			\draw (-1,2) node{\footnotesize{$2$}};
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdeced{}~\pointdeced{}
+		\]
+	\end{itemize}
+\end{Eg}
+\begin{Rq}
+	Ceci peut se voir en utilisant des espèces. Voir par exemple des articles de Loïc sur le sujet pour plus de détails.
+\end{Rq}
+
+
+\begin{defi}
+	Une \emph{forêt exotique} est une forêt décorée avec un nombre pairs de sommets à décorer "couplée" à un mot de longueur égale au nombre de sommets blancs (qui seront les sommets à décorés et les noirs sont ceux qui ne peuvent pas décorés) à support dans $\IEM{1}{n}$ tel que chaque élément de $\IEM{1}{n}$ apparaît deux fois exactement. 
+	On note l'ensemble des forêts exotiques $\EF$.
+\end{defi}
+\begin{Rq}
+	Les deux exemples précédents sont des forêts exotiques.
+\end{Rq}
+
+\subsection{Magma pour les arbres à décorer}
+
+Nous définissons également l'opération binaire suivante sur $\TTBD^{\otimes 2}$ de la manière suivante:
+\begin{defi}
+	Soit $T_1$ et $T_2$ deux éléments de $\TTBD$, on définit:
+	\[
+	T_1\rhd T_2=\sum \text{greffes à gauche de } T_1 \text{ sur } T_2 \text{ sur un n\oe{}ud noir}.
+	\]
+\end{defi} 
+
+\section{Structure Post-Hopf sur les forêts à décorer}
+
+\subsection{Structure d'algèbre de Hopf sur $\FTBD$}
+
+Remarquons que $\FTBD$ est munie d'une structure d'algèbre avec $\cdot$ le produit de concaténation des forêts d'unité $1$. Par conséquent, en identifiant le produit de concaténation de $\FTBD$ et celui de $\TTBD$, nous avons:
+\[
+(\FTBD,\cdot, 1)\simeq (T(\TTBD),\cdot, 1)
+\]
+où $\cdot$ à droite est le produit de concaténation des mots. Cette algèbre hérite donc de la structure naturelle d'algèbre de Hopf provenant de $T(V)$ donnée par:
+\[
+(T(\TTBD),\cdot, 1,\Delta_{\shuffle},\e).
+\]
+
+Remarquons maintenant que $\rhd:\TTBD^{\otimes 2} \rightarrow \TTBD$ est un magma.
+Dans~\cite{siso,FreePL,EnvPost,LPostLie}, les auteurs étendent la définition du produit~\PL{}  d'une algèbre \PL{} à droite ou à gauche à son algèbre enveloppante pour le crochet $\libra{}{}$ dans la proposition~$1$, proposition~$3.7$, proposition~$3.1$ et dans le théorème~$2.8$. Les résultats suivants sont des résumés du lemme~$1$ et de la proposition~$1$ de~\cite{siso}:
+\begin{Prop}\label{Prop:extendTg}
+	Soit $V$ un espace vectoriel et $\rhd$ un produit magmatique sur $V$. Alors, $\rhd$ s'étend uniquement en $\rhd:T(V)^{\otimes 2}\rightarrow T(V)$ telle que pour tous $f,g,h\in T(V)$ et $x,y\in V$:	
+	\begin{itemize}
+		\item $\e(f\rhd g)=\e(f)\e(g)$;
+		\item $\Dsh(f\rhd g)=\Dsh(f)\rhd \Dsh(g)$;
+		\item $f\rhd 1=\e(f)1$;
+		\item $1\rhd f=f$;
+		\item $(yg)\rhd f=y\rhd (g\rhd f)-(y\rhd g)\rhd y$;
+		\item $h\rhd (fg)=\sum \left(h^{(1)}\rhd f\right)\left( h^{(2)}\rhd g \right)$;
+		\item $h\rhd (g\rhd f)= \sum \left(h^{(1)}\left(h^{(2)}\rhd g\right)\right)\rhd f$,
+	\end{itemize}
+	où $\Delta$ est le coproduit de déshuffle.
+\end{Prop}
+\begin{Egs}
+	Soit $V$ un espace vectoriel et $v_1,v_2,v_3,v_4$ quatre éléments de $V$. Alors:
+	\begin{align*}
+		v_1\lhd v_2&=v_1\lhd v_2, \\
+		(v_1v_2)\lhd v_3&=(v_1\lhd  v_3)v_2 +v_1(v_2\lhd  v_3), \\
+		v_1\lhd (v_2v_3)&=(v_1\lhd  v_2)\lhd  v_3-v_1\lhd  (v_2\lhd  v_3), \\
+		(v_1v_2v_3)\lhd v_4&=(v_1\lhd  v_4)v_2v_3+v_1(v_2\lhd  v_4)+v_1v_2(v_3\lhd  v_4), \\
+		v_1\lhd (v_2v_3v_4)&=((v_1\lhd  v_2)\lhd  v_3)\lhd  v_4-(v_1\lhd  (v_2\lhd  v_3))\lhd  v_4-(v_1\lhd  (v_2\lhd  v_4))\lhd  v_3 \\&+v_1\lhd  ((v_2\lhd  v_4)\lhd  v_3) -(v_1\lhd  v_2)\lhd  (v_3\lhd  v_4)+v_1\lhd  (v_2\lhd  (v_3\lhd  v_4)).
+	\end{align*}
+\end{Egs}
+
+Par conséquent, cela donne une définition de $\rhd$ sur l'espace $\FTBD$ vérifiant les identités ci-dessus.
+
+
+\subsection{Structure Post-Hopf sur $T(\FTBD)$}
+
+
+Considérons l'algèbre \PH{} $\left( T(\FTBD), |, 1, \Dsh, \e, \rhd \right)$ où:
+\begin{itemize}
+	\item $T(\FTBD)=T(T(\TTBD))$ est l'espace des phrases sur l'alphabet des arbres à décorer;
+	\item $|$ est la concaténation des phrases;
+	\item $1$ est la forêt vide;
+	\item $\Dsh$ est le coproduit de démélange sur les phrases;
+	\item $\e$ est la counité valant $1$ uniquement sur la forêt vide.
+\end{itemize}
+Par conséquent, en considérant $T(\TTBD)\simeq\FTBD$ avec sa structure \PL{} donnée par $\rhd$, nous savons comme indiqué dans~\cite{Cat24CQMM}, proposition~4.26:
+
+\begin{Prop}\label{Prop:PL_assoprod}
+	Pour toutes phrases $S,P\in T\left(T(V)_+\right)_+$,  on pose $S=S_1|\dots|S_n$ et $P=P_1|\dots|P_k,$ on a:
+	\[
+	P\rhd S=\sum_{f:\IEM{1}{k}\hookrightarrow \IEM{1}{n}} \left(P_{f^{-1}(\{1\})}\rhd S_1\right)|\dots |\left( P_{f^{-1}(\{n\})}\rhd S_n\right).
+	\]
+\end{Prop}
+
+Ainsi , $\left( T(T(\TTBD)), |, 1 , \Dsh, \e, \rhd \right)$ est une algèbre \PH{}.
+
+\section{Structure d'algèbre \PH{} sur les forêts exotiques}
+
+\subsection{Structure d'algèbre \PH{} sur $T(\FD)$}
+
+Pour clarifier les idées, nous détaillons en détails la structure algébrique naturelle de $T(\FD)$ avec l'identification suivante:
+\[
+\forall F_1, F_2,\forall w_1,w_2\in T(\N^*), (F_1\otimes w_1)|(F_2\otimes w_2)=F_1|F_2\otimes w_1|w_2
+\]
+où $F_1|F_2\in T(\FD)$ et $w_1|w_2\in T(T(\N^*))$.
+
+\begin{defi}[Structure d'algèbre sur $T(\FD)$]
+	On définit le produit suivant:
+	\[
+	|:\left\lbrace\begin{array}{rcl}
+		\K\FD\otimes \K\FD & \rightarrow & \K\FD \\
+		(F_1\otimes w_1)\otimes (F_2\otimes w_2) & \mapsto & F_1| F_2 \otimes w_1 | w_2 
+	\end{array} \right.
+	\]
+	où le produit $|$ à gauche est le produit de concaténation de $T(\FTBD)$ et le second est le produit de concaténation des mots dans $T(T(\N^*))$.
+	
+	La forêt décorée vide est l'élément neutre pour la multiplication.
+\end{defi}
+
+\begin{defi}[Structure de cogèbre sur $T(\FD)$]
+	On définit le coproduit suivant:
+	\[
+	\Dsh:\left\{\begin{array}{rcl}
+		\K\FD & \rightarrow & \K\FD\otimes \K\FD \\
+		F_1|\dots|F_k\otimes w_1|\dots| w_k & \mapsto & \displaystyle\sum_{I\subseteq \IEM{1}{k}} (F_I \otimes w_I) \otimes (F_{I^c}\otimes w_{I^c}).
+	\end{array}\right. 
+	\]
+	Ce coproduit est le démélange/deshuffle des forêts décorées. Sa counité est donnée par l'application linéaire valant $1$ sur la forêt vide de $\FD$.
+\end{defi}
+
+Nous parvenons également à récupérer la structure \PH{} sur cette algèbre de la manière suivante:
+\begin{defi}
+	Soit $F_1\otimes w_1, F_2\otimes w_2$ deux éléments de $\FD$, on définit le magma $\rhd$ suivant:
+	\[
+	F_1\otimes w_1 \rhd F_2\otimes w_2 = \sum_{F\in F_1\rhd F_2} F \otimes w_F
+	\] où $w_F$ est le nouveau mot obtenue en traquant le parcourt des lettres de $w_1$ et $w_2$ dans la greffe de $F_2$ sur $F_1$ afin d'obtenir $F$, puis en ajoutant $\max(w_1)$ à toutes les lettres de $w_2$.
+\end{defi}
+\begin{Eg}
+	\[
+	  \pointdec{} \otimes 1 \rhd \raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+	 		\draw (0,0)--(0,1);
+	 		\draw (0,1)--(-1,2);
+	 		\draw (0,1)--(1,2);
+	 		\draw (1,2) circle (3.5pt);
+	 		\draw (-1,2) circle (3.5pt);
+	 		\filldraw (0,0) circle (3.5pt);
+	 		\filldraw (0,1) circle (3.5pt);
+	 \end{tikzpicture}}\otimes 12= \raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+	 \draw (0,0)--(0,1);
+	 \draw (0,1)--(-1,2);
+	 \draw (0,1)--(1,2);
+	 \draw (0,0)--(1,1);
+	 \draw (1,2) circle (3.5pt);
+	 \draw (-1,2) circle (3.5pt);
+	 \filldraw (0,0) circle (3.5pt);
+	 \filldraw (0,1) circle (3.5pt);
+	 \filldraw (1,1) circle (3.5pt);
+	 %greffe
+	 \draw (0,1)--(0,2);
+	 \draw (0,2) circle (3.5pt);
+ \end{tikzpicture}}\otimes 1~2~3+\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+ \draw (0,0)--(0,1);
+ \draw (0,1)--(-1,2);
+ \draw (0,1)--(1,2);
+ \draw (0,0)--(1,1);
+ \draw (1,2) circle (3.5pt);
+ \draw (-1,2) circle (3.5pt);
+ \filldraw (0,0) circle (3.5pt);
+ \filldraw (0,1) circle (3.5pt);
+ \filldraw (1,1) circle (3.5pt);
+ %greffe
+ \draw (0,0)--(-1,1);
+ \draw (-1,1) circle (3.5pt);
+\end{tikzpicture}}\otimes 1~2~3+\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+\draw (0,0)--(0,1);
+\draw (0,1)--(-1,2);
+\draw (0,1)--(1,2);
+\draw (0,0)--(1,1);
+\draw (1,2) circle (3.5pt);
+\draw (-1,2) circle (3.5pt);
+\filldraw (0,0) circle (3.5pt);
+\filldraw (0,1) circle (3.5pt);
+\filldraw (1,1) circle (3.5pt);
+%greffe
+\draw (1,1)--(2,1);
+\draw (2,1) circle (3.5pt);
+\end{tikzpicture}}\otimes 2~3~1.
+	\]
+\end{Eg}
+\begin{Rq}
+	Si on veut faire ça rigoureusement, il faut le faire avec des arbres décorés où chaque décoration des feuilles blanches sont différentes puis projeter dans l'espace des mots où les lettres se répètent en ayant une fonction qui associe à la position des lettres un entier.
+\end{Rq}
+
+En utilisant le prolongement de la proposition~\ref{Prop:extendTg}, nous obtenons alors une opération \PH{} sur $T(\FD)$.
+
+\section{Transport de la structure vers les forêts exotiques}
+
+On considère l'idéal suivant de $(T(\FD),|,1)$:
+\[
+I=\left\langle F\otimes w \,\middle| \, F \text{ à un nombre impair de feuilles blanches ou une des lettres de } w \text{ n'apparaît pas exactement deux fois } \right\rangle
+\]
+\begin{Lemme}
+	L'idéal $I$ est un coidéal de $(T(\FD), \Dsh, \e)$.
+\end{Lemme}
+\begin{proof}
+	Soit $F\otimes w$ un générateur de l'idéal $I$. Par construction du coproduit, $F\otimes w$ est un élément primitif. Par conséquent, $I$ est un coidéal.
+\end{proof}
+
+Ainsi, $I$ est un biidéal de de $(T(\FD), |, 1, \Dsh, \e)$. Par conséquent, $\faktor{T(\FD)}{I}$ admet une structure d'algèbre de Hopf donnée par la structure quotient. 
+
+%%Heu, c'est faux
+%Enfin, nous pouvons remarquer que $I$ est un également un idéal pour $\rhd$. 
+%\begin{Lemme}
+%	Le biidéal $I$ est aussi un idéal pour $\rhd$.
+%\end{Lemme}
+%\begin{proof}
+%	Soit $F\otimes w\in I$ et $H\otimes u\in \FD$:
+%	\begin{align*}
+%		F\otimes w\rhd H\otimes v=\sum_{G\in F\rhd H} G \otimes w_G.
+%	\end{align*}
+%	Ainsi, $G$ est une forêt 
+%\end{proof}
+%
+
+Avec ceci, remarquons que $\faktor{\FD}{I}$ représente exactement les éléments de $\EF$. Ainsi, ceci donne une structure naturelle d'algèbre de Hopf sur $(T(\EF),\cdot,1,\Dsh,I)$ où $T(\EF)$ désigne l'espace des phrases dont l'alphabet est l'ensemble des forêts décorées.
+
+\subsection{Des forêts décorés aux forêts exotiques}
+
+Considérons le diagramme suivant:
+\[
+\begin{tikzcd}
+	\left(T(\EF),|,\Dsh,\e,\rhd\right) \arrow[r, "\pi",bend right=20] & \left(\EF, \cdot, 1, \right) \arrow[l, "s", bend right=20] 
+\end{tikzcd}
+\]
+où $\pi$ est l'unique morphisme d'algèbres de $(T(\FTBD),|,1)$ dans $(\FTBD,\cdot, 1)$ avec $\cdot$ la concaténation des forêts à décorer et la section $s$ est définie comme l'unique morphisme d'algèbres tel que pour tout générateur de $(\EF,\cdot, 1):$
+\[
+s|_{\Gen(\EF)}=\Id|_{\EF}.
+\]
+\begin{Eg}
+	\begin{align*}
+		\pi\left(
+		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\middle|~\point ~\pointdec~\pointdec\right)=\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+		\draw (0,0)--(0,1);
+		\draw (0,1)--(-1,2);
+		\draw (0,1)--(1,2);
+		\draw (1,2) circle (3.5pt);
+		\draw (-1,2) circle (3.5pt);
+		\filldraw (0,0) circle (3.5pt);
+		\filldraw (0,1) circle (3.5pt);
+	\end{tikzpicture}}~\point ~\pointdec~\pointdec, \\
+	s\left(
+	\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+	\end{tikzpicture}}~\middle|~\point ~\pointdec~\pointdec\right)=\left.\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+			\draw (0,0)--(0,1);
+			\draw (0,1)--(-1,2);
+			\draw (0,1)--(1,2);
+			\draw (1,2) circle (3.5pt);
+			\draw (-1,2) circle (3.5pt);
+			\filldraw (0,0) circle (3.5pt);
+			\filldraw (0,1) circle (3.5pt);
+	\end{tikzpicture}}~\middle|~\point~|~ ~\pointdec~\pointdec\right.
+	\end{align*}
+\end{Eg}
+
+%\subsection{Structure d'algèbre de Hopf sur $\EF$}
+%
+%Notons $H=\K\FTBD\simeq T((\TTBD),\cdot,1)$. Lorsque nous considérons un élément de $\FTBD$ deux cas sont possibles:
+%\begin{itemize}
+%	\item soit cet élément a un nombre pair de sommets à décorer. On notera ce sous-espace $\tilde{H}$;
+%	\item soit cet élément a un nombre impair de sommets à décorer. On notera ce sous-espace $H'$;
+%\end{itemize}
+% Ainsi:
+% \begin{equation}
+% 	H=\tilde{H}\otimes H'.
+% \end{equation}
+% 
+% Remarquons les faits suivants:
+% \begin{itemize}
+% 	\item $\tilde{H}$ est une sous-algèbre de $H$;
+% 	\item $H'$ est un coidéal de $(H,\Delta_{\shuffle},\e)$ ($\Delta_{\shuffle}(H')\subseteq H'\otimes H + H\otimes H'$).
+% \end{itemize}
+% 
+% %TODO à revérifier
+% En effectuant le quotient $H$ par le coidéal $H'$, nous obtenons la structure de cogèbre quotient dans:
+% \begin{align*}
+% 	\faktor{H}{H'}&\simeq \faktor{\left(\tilde{H}\oplus H'\right)}{H'} \\
+% 	&\simeq \faktor{\tilde{H}}{H'\cap H}\oplus \faktor{H'}{H'\cap H'} \\
+% 	&\simeq \tilde{H}.
+% \end{align*}
+%Par conséquent, $\tilde{H}$ admet une structure naturelle d'algèbre (en tant que sous-algèbre) et une structure naturelle de cogèbre par quotient.
+%Notons $\dDsh$ le coproduit quotient obtenu sur $\tilde{H}$.
+%
+%\begin{Prop}
+%	La structure $(\tilde{H},\cdot, 1, \dDsh,\e)$ est une bigèbre graduée connexe.
+%\end{Prop} 
+%\begin{proof}
+%	Les propriétés nécessaires sur le produit et coproduit se déduisent naturellement. Il reste à vérifier:
+%	\begin{itemize}
+%		\item $\dDsh(1)=1\otimes 1$;
+%		\item $\forall x,y\in \tilde{H}, \dDsh(x\cdot y)=\dDsh(x)\cdot \dDsh(y)$.
+%		
+%		Soit $x,y\in\tilde{H}$:
+%		\begin{align*}
+%			\dDsh(x\cdot y)&=(\pi\otimes \Id + \Id \otimes \pi)\circ \Delta_{\shuffle}(x\cdot y) \\
+%			&=(\pi\otimes \Id + \Id \otimes \pi)\circ \Dsh(x)\cdot \Dsh(y).
+%		\end{align*}
+%		En utilisant la formule explicite du coproduit de démélange avec $x=x_1\ldots x_k$ et $y=y_1\ldots y_l$, nous obtenons:
+%		\begin{align*}
+%			\dDsh(x\cdot y)&=(\pi\otimes \Id + \Id \otimes \pi)\left( \sum_{\substack{I\subseteq \IEM{1}{k} \\ J \subseteq \IEM{1}{l}}} x_I\cdot y_J \otimes x_{I^c}\cdot y_{J^c} \right) \\
+%			&=\sum_{\substack{I\subseteq \IEM{1}{k} \\ J \subseteq \IEM{1}{l}}} \pi\left(x_I\cdot y_J\right)\otimes x_{I^c}\cdot y_{J^c} + x_{I}\cdot y_{J}\otimes \pi\left(x_{I^c}\cdot y_{J^c}\right).
+%		\end{align*}
+%		Or, $\pi(x_I\cdot y_J)\neq 0$ \ssi{} $x_I\in \tilde{H} \land y_J\in \tilde{H}$ ou $x_I\in H' \land y_J\in H'$. En posant $S=\tilde{H}\times\tilde{H} \cup H'\times H'$. Ainsi:
+%		\begin{align*}
+%			\dDsh(x\cdot y)&=\sum_{\substack{I\subseteq \IEM{1}{k} \\ J \subseteq \IEM{1}{l}}} \mathbbm{1}_S(x_{I^c},y_ {J^{c}})~ x_I\cdot y_J\otimes x_{I^c}\cdot y_{J^c} + 
+%			\sum_{\substack{I\subseteq \IEM{1}{k} \\ J \subseteq \IEM{1}{l}}} \mathbbm{1}_S(x_{I^c},y_ {J^{c}})~x_{I}\cdot y_{J}\otimes x_{I^c}\cdot y_{J^c} \\
+%			&=
+%		\end{align*}
+%	\end{itemize}
+%\end{proof}
+
+
+\bibliography{biblio_Ad}
+\bibliographystyle{plain}
+
+
+\end{document}
