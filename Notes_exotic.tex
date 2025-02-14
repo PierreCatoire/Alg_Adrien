@@ -122,7 +122,7 @@ innerbottommargin=0pt]{mdframed}
 \DeclareMathOperator{\Id}{Id}
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Gen}{Gen}
-
+\DeclareMathOperator{\ima}{Im}
 % Macros texte
 \NewDocumentCommand{\PL}{}{Post-Lie}
 \NewDocumentCommand{\PH}{}{Post-Hopf}
@@ -273,7 +273,7 @@ innerbottommargin=0pt]{mdframed}
 	\end{itemize}
 \end{Eg}
 \begin{Rq}
-	Ceci peut se voir en utilisant des espèces. Voir par exemple des articles de Loïc sur le sujet pour plus de détails.
+	Ceci peut se voir en utilisant des espèces. Voir par exemple l'introduction de l'article:\url{http://arxiv.org/abs/1905.10199v1} de Loïc sur le sujet pour plus de détails (Cela contient le minimum syndical).
 \end{Rq}
 
 
@@ -398,7 +398,7 @@ Nous parvenons également à récupérer la structure \PH{} sur cette algèbre d
 	Soit $F_1\otimes w_1, F_2\otimes w_2$ deux éléments de $\FD$, on définit le magma $\rhd$ suivant:
 	\[
 	F_1\otimes w_1 \rhd F_2\otimes w_2 = \sum_{F\in F_1\rhd F_2} F \otimes w_F
-	\] où $w_F$ est le nouveau mot obtenue en traquant le parcourt des lettres de $w_1$ et $w_2$ dans la greffe de $F_2$ sur $F_1$ afin d'obtenir $F$, puis en ajoutant $\max(w_1)$ à toutes les lettres de $w_2$.
+	\] où $w_F$ est le nouveau mot obtenu en traquant le parcourt des lettres de $w_1$ et $w_2$ dans la greffe de $F_2$ sur $F_1$ afin d'obtenir $F$, puis en ajoutant $\max(w_1)$ à toutes les lettres de $w_2$.
 \end{defi}
 \begin{Eg}
 	\[
@@ -462,7 +462,10 @@ En utilisant le prolongement de la proposition~\ref{Prop:extendTg}, nous obtenon
 
 On considère l'idéal suivant de $(T(\FD),|,1)$:
 \[
-I=\left\langle F\otimes w \,\middle| \, F \text{ à un nombre impair de feuilles blanches ou une des lettres de } w \text{ n'apparaît pas exactement deux fois } \right\rangle
+I=\left\langle F\otimes w \,\middle| \begin{array}{c}
+	F \text{ à un nombre impair de feuilles blanches ou une des lettres de } \\
+	 w \text{ n'apparaît pas exactement deux fois }
+\end{array}\,  \right\rangle
 \]
 \begin{Lemme}
 	L'idéal $I$ est un coidéal de $(T(\FD), \Dsh, \e)$.
@@ -491,6 +494,21 @@ Avec ceci, remarquons que $\faktor{\FD}{I}$ représente exactement les élément
 
 \subsection{Des forêts décorés aux forêts exotiques}
 
+\subsubsection{La structure d'algèbre}
+
+\begin{defi}
+	On définit un produit sur $\EF$ comme le produit de concaténation des forêts exotiques en effectuant un décalage des décorations des nœuds si nécessaire pour obtenir une forêt exotique.
+\end{defi}
+\begin{Eg}
+	\[
+	\pointdec~\pointdec \otimes 11 \cdot \pointdec~\pointdec\otimes 11= \pointdec~\pointdec~\pointdec~\pointdec\otimes 1122.
+	\]
+\end{Eg}
+
+\begin{Rq}
+	Les générateurs de $\EF{}$ pour ce produit sont les forêts exotiques dites \emph{irréductibles}. Ce sont les éléments de $\EF{}$ ne pouvant être écrit comme la concaténation de forêts exotiques. On notera l'ensemble des générateurs de cet espace $\Gen(\EF{})$.
+\end{Rq}
+
 Considérons le diagramme suivant:
 \[
 \begin{tikzcd}
@@ -498,52 +516,123 @@ Considérons le diagramme suivant:
 \end{tikzcd}
 \]
 où $\pi$ est l'unique morphisme d'algèbres de $(T(\FTBD),|,1)$ dans $(\FTBD,\cdot, 1)$ avec $\cdot$ la concaténation des forêts à décorer et la section $s$ est définie comme l'unique morphisme d'algèbres tel que pour tout générateur de $(\EF,\cdot, 1):$
-\[
-s|_{\Gen(\EF)}=\Id|_{\EF}.
-\]
+\begin{equation*}
+	s|_{\Gen(\EF)}=\Id|_{\EF}.
+\end{equation*}
+
+\begin{Rq}\label{Rq:section}
+	L'application $\pi$ n'est pas injective néanmoins nous avons les propriétés suivantes:
+	\begin{align*}
+		\pi\circ s&=\Id_{\EF}, \\
+		s\circ \pi|_{T(\Gen(\EF))}&=\Id_{T(\Gen(\EF{}))}, \\
+		\ima(s)&= T(\Gen(\EF{}))\subseteq T(\EF{}), \\
+		\Dsh(T(\Gen(\EF)))&\subseteq T(\Gen(\EF))\otimes T(\Gen(\EF)).
+	\end{align*}
+\end{Rq}
+
 \begin{Eg}
 	\begin{align*}
 		\pi\left(
 		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
-			\draw (0,0)--(0,1);
-			\draw (0,1)--(-1,2);
-			\draw (0,1)--(1,2);
-			\draw (1,2) circle (3.5pt);
-			\draw (-1,2) circle (3.5pt);
-			\filldraw (0,0) circle (3.5pt);
-			\filldraw (0,1) circle (3.5pt);
-		\end{tikzpicture}}~\middle|~\point ~\pointdec~\pointdec\right)=\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
-		\draw (0,0)--(0,1);
-		\draw (0,1)--(-1,2);
-		\draw (0,1)--(1,2);
-		\draw (1,2) circle (3.5pt);
-		\draw (-1,2) circle (3.5pt);
-		\filldraw (0,0) circle (3.5pt);
-		\filldraw (0,1) circle (3.5pt);
-	\end{tikzpicture}}~\point ~\pointdec~\pointdec, \\
-	s\left(
-	\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
-			\draw (0,0)--(0,1);
-			\draw (0,1)--(-1,2);
-			\draw (0,1)--(1,2);
-			\draw (1,2) circle (3.5pt);
-			\draw (-1,2) circle (3.5pt);
-			\filldraw (0,0) circle (3.5pt);
-			\filldraw (0,1) circle (3.5pt);
-	\end{tikzpicture}}~\middle|~\point ~\pointdec~\pointdec\right)=\left.\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
-			\draw (0,0)--(0,1);
-			\draw (0,1)--(-1,2);
-			\draw (0,1)--(1,2);
-			\draw (1,2) circle (3.5pt);
-			\draw (-1,2) circle (3.5pt);
-			\filldraw (0,0) circle (3.5pt);
-			\filldraw (0,1) circle (3.5pt);
-	\end{tikzpicture}}~\middle|~\point~|~ ~\pointdec~\pointdec\right.
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\middle|~\point ~\pointdec~\pointdec \otimes 11|11 \right)&=\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdec~\pointdec \otimes 1122, \\
+		s\left(
+		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdec~\pointdec \otimes 1122 \right)&=\left.\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}\otimes 11~\middle|~\point~|~ ~\pointdec~\pointdec\otimes 11\right. , \\
+		s\left(
+		\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdec~\pointdec \otimes 1212 \right)&=\raisebox{-0.3\height}{\begin{tikzpicture}[x=0.4cm, y=0.4cm]
+				\draw (0,0)--(0,1);
+				\draw (0,1)--(-1,2);
+				\draw (0,1)--(1,2);
+				\draw (1,2) circle (3.5pt);
+				\draw (-1,2) circle (3.5pt);
+				\filldraw (0,0) circle (3.5pt);
+				\filldraw (0,1) circle (3.5pt);
+		\end{tikzpicture}}~\point ~\pointdec~\pointdec \otimes 1212.
 	\end{align*}
 \end{Eg}
 
-%\subsection{Structure d'algèbre de Hopf sur $\EF$}
-%
+
+\subsection{Structure d'algèbre de Hopf sur $\EF$}
+
+On peut définir une structure de de cogèbre sur la structure $\EF$ en posant pour tout élément $x\in\EF$:
+\[
+\Delta_{\EF}(x)\coloneqq(\pi\otimes \pi) \circ \Dsh \circ s(x). 
+\]
+
+\begin{Prop}
+	L'application $\Delta_{\EF}:\K\EF\otimes \K\EF \rightarrow \K\EF$ est une comultiplication coassociative. De plus, $(\EF,\cdot, 1, \Delta_{\EF}, \e)$ est une algèbre de Hopf cocommutative.
+\end{Prop}
+\begin{proof}
+ 	Effectuons le calcul suivant en utilisant les propriétés énumérées de la remarque~\ref{Rq:section}:
+	\begin{align*}
+		(\Delta_{\EF} \otimes \Id)\circ \Delta_{\EF}&=(\pi^{\otimes 2} \circ \Dsh \circ s \otimes \Id) \circ \pi^{\otimes 2} \circ \Delta_{\shuffle} \circ s \\
+		&=\pi^{\otimes 3}\circ (\Dsh\otimes \Id)\circ (s\circ \pi \otimes \Id)\circ \Dsh \circ s \\
+		&=\pi^{\otimes 3}\circ (\Dsh\otimes \Id)\circ \Dsh \circ s \\
+		&=\pi^{\otimes 3}\circ (\Id\otimes \Dsh)\circ \Dsh \circ s \\
+		&=(\pi \otimes \pi^{\otimes 2}\circ \Dsh) \circ \Dsh \circ s \\
+		&=(\pi \otimes \pi^{\otimes 2}\circ \Dsh) \circ (\Id\otimes s \circ \pi) \circ \Dsh \circ s \\
+		&=(\Id \otimes \pi^{\otimes 2}\circ \Dsh \circ s) \circ \pi^{\otimes 2}\circ \Dsh \circ s \\
+		&= (\Id \otimes \Delta_{\EF})\circ \Delta_{\EF}.
+	\end{align*}
+	Ce qui montre que $\Delta_{\EF}$ est coassociative. Sa counité est identique à celle de $T(\EF)$ envoyant la forêt exotique vide sur $1$.
+	
+	De plus, comme $s, \Dsh$ et $\pi$ sont des morphismes d'algèbres, nous en déduisons que $\Delta_{\EF}$ est un morphisme d'algèbres.
+	
+	Par conséquent, $(\EF,\cdot, 1, \Delta_{\EF}, \e)$ est une algèbre de Hopf cocommutative. 
+\end{proof}
+
+\subsection{La structure \PH{} sur $\EF{}$}
+
+Nous décrivons maintenant la structure \PH{} sur l'algèbre de Hopf $(\EF,\cdot, 1, \Delta_{\EF},\e)$ que nous venons de construire.
+
+\begin{defi}
+	Soit $F_1\otimes w_1, F_2\otimes w_2$ deux éléments de $\EF$, on définit le magma $\rhd$ suivant:
+	\[
+	F_1\otimes w_1 \rhd F_2\otimes w_2 = \sum_{F\in F_1\rhd F_2} F \otimes w_F
+	\] où $w_F$ est le nouveau mot obtenu en traquant le parcourt des lettres de $w_1$ et $w_2$ dans la greffe de $F_2$ sur $F_1$ afin d'obtenir $F$, puis en ajoutant $\max(w_1)$ à toutes les lettres de $w_2$.
+\end{defi}
+
+
+
+\section{\'Etude de cette algèbre \PH{}}
 %Notons $H=\K\FTBD\simeq T((\TTBD),\cdot,1)$. Lorsque nous considérons un élément de $\FTBD$ deux cas sont possibles:
 %\begin{itemize}
 %	\item soit cet élément a un nombre pair de sommets à décorer. On notera ce sous-espace $\tilde{H}$;
