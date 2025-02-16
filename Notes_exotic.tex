@@ -40,6 +40,8 @@ innerbottommargin=0pt]{mdframed}
 \usepackage{calc}
 \usetikzlibrary{automata, positioning, arrows}
 
+\usepackage{planarforest}
+
 \theoremstyle{definition}
 \newtheorem{defi}{Definition}[section]
 \newtheorem{Eg}{\textbf{Example}}[section]
@@ -494,6 +496,8 @@ Avec ceci, remarquons que $\faktor{\FD}{I}$ représente exactement les élément
 
 \subsection{Des forêts décorés aux forêts exotiques}
 
+Refs: \cite{Laurent20eab, Laurent21ata}
+
 \subsubsection{La structure d'algèbre}
 
 \begin{defi}
@@ -592,6 +596,8 @@ où $\pi$ est l'unique morphisme d'algèbres de $(T(\FTBD),|,1)$ dans $(\FTBD,\c
 
 \subsection{Structure d'algèbre de Hopf sur $\EF$}
 
+Refs: \cite{Bronasco22ebs, Bronasco22cef, Bronasco25hoi}
+
 On peut définir une structure de de cogèbre sur la structure $\EF$ en posant pour tout élément $x\in\EF$:
 \[
 \Delta_{\EF}(x)\coloneqq(\pi\otimes \pi) \circ \Dsh \circ s(x). 
@@ -629,6 +635,17 @@ Nous décrivons maintenant la structure \PH{} sur l'algèbre de Hopf $(\EF,\cdot
 	F_1\otimes w_1 \rhd F_2\otimes w_2 = \sum_{F\in F_1\rhd F_2} F \otimes w_F
 	\] où $w_F$ est le nouveau mot obtenu en traquant le parcourt des lettres de $w_1$ et $w_2$ dans la greffe de $F_2$ sur $F_1$ afin d'obtenir $F$, puis en ajoutant $\max(w_1)$ à toutes les lettres de $w_2$.
 \end{defi}
+
+
+\textcolor{red}{I think this is not true. For instance, we find}
+\[
+\forest{1,1}\triangleright \forest{b,b}=\forest{b[1,1],b}+\forest{b,b[1,1]}+2\forest{b[1],b[1]},
+\]
+while
+\[
+\Delta_\shuffle \forest{1,1}=\forest{1,1}\otimes \textbf{1}+\textbf{1}\otimes \forest{1,1},\quad 
+(\forest{1,1}^{(1)}\triangleright\forest{b})\cdot(\forest{1,1}^{(2)}\triangleright\forest{b})=\forest{b[1,1],b}+\forest{b,b[1,1]}.
+\]
 
 
 
@@ -688,7 +705,7 @@ Nous décrivons maintenant la structure \PH{} sur l'algèbre de Hopf $(\EF,\cdot
 %\end{proof}
 
 
-\bibliography{biblio_Ad}
+\bibliography{biblio_Ad,Ma_Bibliographie}
 \bibliographystyle{plain}
 
 
